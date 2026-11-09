@@ -18,8 +18,8 @@ options(scipen=999) # strongly avoid scientific notations (none of the e bs)
 
 ```{r data}
 
-data_eo <- read.table("/Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_data/EO_relpower_behavbl.csv", header=T, sep=",")
-data_ec <- read.table("/Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_data/EC_relpower_behavbl.csv", header=T, sep=",")
+data_eo <- read.table("/Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_data/EO_relpower_behavbl.csv", header=T, sep=",")
+data_ec <- read.table("/Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_data/EC_relpower_behavbl.csv", header=T, sep=",")
 
 data_eo$Drug <- factor(data_eo$Drug)
 data_eo$TP <- factor(data_eo$TP)
@@ -43,7 +43,7 @@ data_ec_pl_all<-data_ec[data_ec$Drug==2,]
 # ----- CHECK BASELINE DIFFERENCES -----
 
 ```{r baseline-t-tests}
-path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_results/behav_baseline_checks/RR_OTPH_behav_base0_ttests.txt"
+path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_results/behav_baseline_checks/RR_OTPH_behav_base0_ttests.txt"
 sink(path_to_base)
 
 # Alertness
@@ -105,7 +105,7 @@ sink()
 ```{r baseline-1, echo=FALSE}
 
 
-path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_results/behav_baseline_checks/RR_OTPH_behav_base1.txt"
+path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_results/behav_baseline_checks/RR_OTPH_behav_base1.txt"
 sink(path_to_base)
 
 
@@ -196,7 +196,7 @@ sink()
 ```{r baseline-2, echo=FALSE}
 
 
-path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_results/behav_baseline_checks/RR_OTPH_behav_base2.txt"
+path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_results/behav_baseline_checks/RR_OTPH_behav_base2.txt"
 sink(path_to_base)
 
 
@@ -268,7 +268,7 @@ sink()
 ```{r baseline-3, echo=FALSE}
 
 
-path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new/rr_results/behav_baseline_checks/RR_OTPH_behav_base3.txt"
+path_to_base = "//Users/abhishekanand/Documents/OTPH_TF/RR_new_relpower/rr_results/behav_baseline_checks/RR_OTPH_behav_base3.txt"
 sink(path_to_base)
 
 
@@ -331,23 +331,23 @@ for (eyes_cond in c("eyes_open", "eyes_closed")){
       
       # if anova shows significant main or interaction --> update list of significant results
       
-      effects <- c(paste0("Drug:", behav_var))    
-      for (effect in effects) {
-        if (a[effect, "Pr(>F)"] < 0.05) {
-          eff_found <- c(
-            eff_found,
-            sprintf(
-              "%s: %s, %s --> signif: %s -- %s",
-              eyes_cond, band, behav_var, effect, a[effect, "Pr(>F)"]))}}
+      #effects <- c(paste0("Drug:", behav_var))    
+      #for (effect in effects) {
+        #if (a[effect, "Pr(>F)"] < 0.05) {
+          #eff_found <- c(
+            #eff_found,
+            #sprintf(
+              #"%s: %s, %s --> signif: %s -- %s",
+              #eyes_cond, band, behav_var, effect, a[effect, "Pr(>F)"]))}}
       
       
     }}}
 
-cat("\n=========================================================\n\n")
-cat("===== Found significat results in Drug_Behav interaction: =====\n\n")
-cat("=========================================================\n\n")
-print(omnibus_found)
-cat("=========================================================\n\n")
+#cat("\n=========================================================\n\n")
+#cat("===== Found significat results in Drug_Behav interaction: =====\n\n")
+#cat("=========================================================\n\n")
+#print(omnibus_found)
+#cat("=========================================================\n\n")
 #return control back to console
 sink()
 ```
