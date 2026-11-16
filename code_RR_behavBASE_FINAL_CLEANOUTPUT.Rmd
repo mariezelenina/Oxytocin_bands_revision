@@ -16,7 +16,7 @@ options(scipen=999) # strongly avoid scientific notations (none of the e bs)
 
 # ----- CHOOSE WHICH POWER -----
 ```{r}
-whichpower = "abs" # "abs" or "rel"
+whichpower = "rel" # "abs" or "rel"
 ```
 
 # ----- LOAD DATA with baseline scales -----
@@ -267,7 +267,7 @@ for (eyes_cond in c("eyes_open", "eyes_closed")){
   for (band in bands) {
   
     # LOOP THROUGH BEHAV MEASURES
-    behav_vars <- c("Alertness_base", "Excitement_base", "Sociability_base")
+    behav_vars <- c("Alertness_base_reversed", "Excitement_base_reversed", "Sociability_base_reversed")
     for (behav_var in behav_vars) {
       
       # do the analysis for this eyes condition, band, measure
@@ -529,6 +529,7 @@ get_slope_results <- function(trends_df) {
 # ----- TIMEPOINT-SPECIFIC SLOPES -----
 
 
+
 get_tp_results <- function(trends_tp_df, trends_full_df) {
 
   # Only drugs with significant/trending overall slopes
@@ -580,12 +581,19 @@ get_tp_results <- function(trends_tp_df, trends_full_df) {
 
     for (i in seq_len(nrow(drug_df))) {
 
+      # Signed r-equivalent effect size
+      t_value <- drug_df$t.ratio[i]
+      df_value <- drug_df$df[i]
+
+      r <- t_value / sqrt(t_value^2 + df_value)
+
       tp_text[i] <- sprintf(
-        "TP%s: beta = %.4f, t(%.2f) = %.2f, %s",
+        "TP%s: beta = %.4f, t(%.2f) = %.2f, r = %.2f, %s",
         as.character(drug_df$TP[i]),
         drug_df[[trend_col]][i],
-        drug_df$df[i],
-        drug_df$t.ratio[i],
+        df_value,
+        t_value,
+        r,
         format_p(drug_df$p.value[i])
       )
     }
@@ -601,6 +609,7 @@ get_tp_results <- function(trends_tp_df, trends_full_df) {
 
   paste(results, collapse = "\n")
 }
+
 
 
 
@@ -650,11 +659,7 @@ for (eyes_cond in c("eyes_open", "eyes_closed")) {
 
       # ----- STEP 1: OMNIBUS LMM -----
 
-      formula_str <- paste0(
-        band, " ~ ",
-        band, "_base + TP*Drug*", behav_var,
-        " + (1|id)"
-      )
+      formula_str <- paste0(band, " ~ ",band, "_base + TP*Drug*", behav_var," + (1|id)")
 
       modelfull <- lmer(
         as.formula(formula_str),
